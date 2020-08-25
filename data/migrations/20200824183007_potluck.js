@@ -37,7 +37,7 @@ exports.up = function (knex) {
     .createTable("guests", (tbl) => {
       tbl.increments();
       tbl.string("first_name").notNullable();
-      tbl.string("email");
+      tbl.string("email").notNullable();
       tbl.boolean("rsvp_pending").defaultTo(true);
       tbl.boolean("attending").defaultTo(false);
       tbl

@@ -1,5 +1,8 @@
 const router = require("express").Router();
 const Events = require("./eventsModel");
+const User = require("../users/userModel");
+const Menu = require("../menu/menuModel");
+const guests = require("../guests/guestModel");
 
 router.get("/", (req, res) => {
   Events.find()
@@ -12,7 +15,23 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res) => {
   Events.findById(req.params.id)
     .then((event) => {
-      res.status(200).json(event);
+      User.findById(event.user_id).then((user) => {
+        const addUser = {
+          ...event,
+          host: {
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+          },
+        };
+        Menu.findByEventId(event.id).then((menu) => {
+          const addMenu = { ...addUser, menu_items: menu };
+          guests.findByEventId(event.id).then((guest) => {
+            const addGuest = { ...addMenu, guests: guest };
+            res.status(200).json(addGuest);
+          });
+        });
+      });
     })
     .catch((err) => res.status(500).json({ message: err.message }));
 });
