@@ -13,7 +13,7 @@ function find() {
   return db("menu_items");
 }
 function findById(id) {
-  return db("menu_items").where({ id });
+  return db("menu_items").where({ id }).first();
 }
 function findByEventId(event_id) {
   return db("menu_items").where({ event_id });
