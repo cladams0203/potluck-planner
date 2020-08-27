@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const { generateToken, validateToken } = require("../middleware");
 
 const Users = require("./userModel");
+const Guest = require("../guests/guestModel");
 
 router.get("/", (req, res) => {
   Users.find()
@@ -28,6 +29,14 @@ router.post("/register", (req, res) => {
     .then((newUser) => {
       delete newUser.password;
       const token = generateToken(newUser);
+      Guest.findByEmail(newUser.email).then((guest) => {
+        console.log(guest);
+        if (guest.length > 0) {
+          guest.forEach((item) => {
+            Guest.edit(item.id, { user_id: newUser.id });
+          });
+        }
+      });
       res.status(201).json({
         message: "successfully registered user",
         token,

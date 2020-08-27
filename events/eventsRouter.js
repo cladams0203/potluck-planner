@@ -63,5 +63,25 @@ router.delete("/:id", (req, res) => {
     })
     .catch((err) => res.status(500).json({ message: err.message }));
 });
+// router.get("/user/:id", (req, res) => {
+//   console.log(req.params.id);
+//   guests
+//     .findByUserId(req.params.id)
+//     .then((list) => {
+//       console.log(list);
+//       const newEvent = [];
+//       list.forEach((item) => {
+//         Events.findById(item.event_id)
+//           .then((event) => {
+//             console.log(event);
+//             newEvent.push(event);
+//           })
+//           .catch((err) => console.log(err));
+//       });
+//       // res.status(200).json(newEvent);
+//       console.log(newEvent);
+//     })
+//     .catch((err) => console.log(err));
+// });
 
 module.exports = router;

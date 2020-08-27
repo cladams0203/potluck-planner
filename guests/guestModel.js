@@ -8,6 +8,7 @@ module.exports = {
   insert,
   edit,
   remove,
+  findByUserId,
 };
 function find() {
   return db("guests");
@@ -18,8 +19,11 @@ function findById(id) {
 function findByEventId(event_id) {
   return db("guests").where({ event_id });
 }
+function findByUserId(user_id) {
+  return db("guests").where({ user_id });
+}
 function findByEmail(email) {
-  return db("guests").where({ email: email }).first();
+  return db("guests").where({ email: email });
 }
 async function insert(newGuest) {
   const [guest] = await db("guests").insert(newGuest, "*");
